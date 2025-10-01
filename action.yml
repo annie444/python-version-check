@@ -1,0 +1,40 @@
+name: Python Package Versioning Test
+description: >
+  Compares the locally specified version in the pyproject.toml to the version available on the given index
+
+inputs:
+  path:
+    description: Path to the pyproject.toml to inspect.
+    required: false
+    default: pyproject.toml
+
+  index:
+    description: The (simple) package index to check.
+    required: false
+    default: "https://pypi.org/simple"
+
+runs:
+  using: composite
+  steps:
+    - name: Check package version
+      id: export
+      shell: bash
+      run: |
+        "${{ github.action_path }}/app.py" \
+        "${{ inputs.path }}" \
+        "${{ inputs.index }}"
+
+outputs:
+  current_version_exists:
+    description: true if the version exists in the index.
+    value: ${{ steps.export.outputs.current_version_exists }}
+  package_version:
+    description: Version string extracted from pyproject.toml.
+    value: ${{ steps.export.outputs.package_version }}
+  package_name:
+    description: Name of the package extracted from pyproject.toml.
+    value: ${{ steps.export.outputs.package_name }}
+
+branding:
+  icon: package
+  color: yellow
