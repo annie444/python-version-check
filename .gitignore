@@ -101,5 +101,8 @@ __tests__/runner/*
 .idea
 *.code-workspace
 
+# Parcel cache
+.parcel-cache/
+
 # Python virtual environment
 .venv/
