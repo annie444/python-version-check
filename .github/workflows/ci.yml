@@ -96,9 +96,16 @@ jobs:
 
       - name: Move major tag (vX → this commit)
         env:
-          TAG: ${{ github.ref_name }} # e.g. v2.0.0
+          TAG: ${{ github.ref_name }}
           GH_TOKEN: ${{ github.token }}
         run: |
-          major=${TAG%%.*}              # → v2
+          major=${TAG%%.*}
           git tag -f "$major" "$TAG"
           git push -f origin "$major"
+
+      - name: Move latest tag
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git tag -f "latest" "$TAG"
+          git push -f origin "latest"
