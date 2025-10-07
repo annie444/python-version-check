@@ -16,11 +16,20 @@ inputs:
 runs:
   using: composite
   steps:
+    - name: Set up Python
+      uses: actions/setup-python@v5
+
+    - name: Install dependencies
+      shell: bash
+      run: |
+        python -m pip install --upgrade pip
+        pip install tomllib
+
     - name: Check package version
       id: export
       shell: bash
       run: |
-        "${{ github.action_path }}/app.py" \
+        python "${{ github.action_path }}/app.py" -- \
         "${{ inputs.path }}" \
         "${{ inputs.index }}"
 

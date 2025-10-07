@@ -37,7 +37,7 @@ jobs:
 
       - name: Check package version on all index
         id: version_check
-        uses: MathieuMoalic/action-python-package-new-version@v3
+        uses: annie444/python-version-check@v1
         with:
           index: https://test.pypi.org/simple
 

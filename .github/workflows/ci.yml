@@ -33,7 +33,7 @@ jobs:
             index: "https://test.pypi.org/simple"
             expected_test_pypi_org: "false"
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Run version-check (${{ matrix.case }})
         id: check
