@@ -1,0 +1,18 @@
+[project]
+name = "python-version-check-test-dynamic-published"
+description = "Add your description here"
+readme = "README.md"
+authors = [{ name = "Annie Ehler", email = "annie.ehler.4@gmail.com" }]
+requires-python = ">=3.13.2"
+dependencies = []
+dynamic = ["version"]
+
+[project.scripts]
+python-version-check-test-dynamic-published = "python_version_check_test_dynamic_published:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.version]
+path = "src/python_version_check_test_dynamic_published/__init__.py"

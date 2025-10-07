@@ -11,6 +11,7 @@ import sys
 import urllib.error
 import urllib.request
 import tomllib
+import importlib
 
 
 def parse_args() -> tuple[str, str]:
@@ -36,11 +37,31 @@ def read_name_version(pyproject_path: str) -> tuple[str, str]:
         sys.exit(f"::error:: Error: {pyproject_path} is missing `[project]` section")
 
     proj = data["project"]
-    for key in ("name", "version"):
-        if key not in proj:
-            sys.exit(f"::error:: Error: {pyproject_path} is missing `[project].{key}`")
+    if "name" not in proj:
+        sys.exit(f"::error:: Error: {pyproject_path} is missing `[project].name`")
+    name = proj["name"]
+    if "version" not in proj and "dynamic" in proj:
+        if "version" not in proj["dynamic"]:
+            sys.exit(
+                f"::error:: Error: {pyproject_path} is missing `[project].version`"
+            )
+        else:
+            module_path = os.path.dirname(pyproject_path)
+            sys.path.insert(0, module_path)
+            sys.path.insert(0, os.path.join(module_path, "src"))
+            try:
+                mod_name = name.replace("-", "_")
+                mod = importlib.import_module(mod_name)
+                version = getattr(mod, "__version__", None)
+                if not version:
+                    sys.exit(
+                        f"::error:: Error: {mod_name} does not have a __version__ attribute"
+                    )
+                return name, version
+            except Exception as e:
+                sys.exit(f"::error:: Error: Failed to import {mod_name}: {e}")
 
-    return proj["name"], proj["version"]
+    return name, proj["version"]
 
 
 def query_index(index: str, package: str) -> list[str] | None:
