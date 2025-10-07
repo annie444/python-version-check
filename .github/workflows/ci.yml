@@ -105,6 +105,7 @@ jobs:
 
       - name: Move latest tag
         env:
+          TAG: ${{ github.ref_name }}
           GH_TOKEN: ${{ github.token }}
         run: |
           git tag -f "latest" "$TAG"
@@ -112,6 +113,7 @@ jobs:
 
       - name: Move stable tag
         env:
+          TAG: ${{ github.ref_name }}
           GH_TOKEN: ${{ github.token }}
         run: |
           git tag -f "stable" "$TAG"
