@@ -16,18 +16,11 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: Set up Python
-      uses: actions/setup-python@v6
-      with:
-        python-version: ">=3.11"
-        check-latest: true
-        update-environment: true
-
     - name: Check package version
       id: export
       shell: bash
       run: |
-        python "${{ github.action_path }}/app.py" -- \
+        "${{ github.action_path }}/app.py" \
         "${{ inputs.path }}" \
         "${{ inputs.index }}"
 

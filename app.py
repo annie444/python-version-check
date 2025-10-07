@@ -1,3 +1,4 @@
+#!/usr/bin/env python3.13
 """
 Parses pyproject.toml, queries the package index,
 and sets outputs for GitHub Actions.
