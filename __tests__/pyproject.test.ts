@@ -18,27 +18,25 @@ const { getPackageInfo, getPackageVersion } = await import(
 
 describe('pyproject.ts', () => {
   beforeEach(() => {
-    fs.promises.readFile.mockImplementation(
-      async (path, ...opts): Promise<string> => {
-        const paths = {
-          ['valid/path']: `[project]
+    fs.promises.readFile.mockImplementation(async (path): Promise<string> => {
+      const paths = {
+        ['valid/path']: `[project]
 name = "valid-package"
 version = "1.0.0"
 `,
-          ['valid/dynamic/path']: `[project]
+        ['valid/dynamic/path']: `[project]
 name = "valid-package"
 dynamic = ["version"]
 `,
-          ['invalid/toml']: `invalid toml content`
-        }
-        if (path in paths) {
-          return paths[path as keyof typeof paths]
-        }
-        throw new Error(`File not found: ${path}`)
+        ['invalid/toml']: `invalid toml content`
       }
-    )
+      if (path in paths) {
+        return paths[path as keyof typeof paths]
+      }
+      throw new Error(`File not found: ${path}`)
+    })
     fs.promises.stat.mockImplementation(
-      async (path, ...opts): Promise<Stats | BigIntStats> => {
+      async (path): Promise<Stats | BigIntStats> => {
         const valid = ['valid/path', 'valid/dynamic/path', 'invalid/toml']
         const invalid = ['not/a/file']
         if (valid.includes(path as string)) {
