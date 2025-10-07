@@ -1,5 +1,5 @@
 __version__ = "0.1.0"
 
+from . import cli
 
-def main() -> None:
-    print("Hello from python-version-check-test-dynamic-published!")
+__all__ = ["__version__", "cli"]

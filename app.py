@@ -11,7 +11,7 @@ import sys
 import urllib.error
 import urllib.request
 import tomllib
-import importlib
+import importlib.metadata
 
 
 def parse_args() -> tuple[str, str]:
@@ -51,8 +51,7 @@ def read_name_version(pyproject_path: str) -> tuple[str, str]:
             sys.path.insert(0, os.path.join(module_path, "src"))
             try:
                 mod_name = name.replace("-", "_")
-                mod = importlib.import_module(mod_name)
-                version = getattr(mod, "__version__", None)
+                version = importlib.metadata.version(mod_name)
                 if not version:
                     sys.exit(
                         f"::error:: Error: {mod_name} does not have a __version__ attribute"
