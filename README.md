@@ -1,17 +1,26 @@
 # 🐍 Python Package Versioning Test • GitHub Action
 
-This is built upon [MathieuMoalic/action-python-package-new-version](https://github.com/MathieuMoalic/action-python-package-new-version). This uses the simple API endpoints, which is technically a downgrade. Therefore I don't expect this to be combined with the upstream.
+This is built upon
+[MathieuMoalic/action-python-package-new-version](https://github.com/MathieuMoalic/action-python-package-new-version).
+This uses the simple API endpoints, which is technically a downgrade. Therefore
+I don't expect this to be combined with the upstream.
 
-Make your pipeline _self-aware_: this action inspects the `project.version` declared in **`pyproject.toml`** and tells you whether that exact version is already on the Python package index of your choice (PyPI, Test PyPI, a private index, …).
+Make your pipeline _self-aware_: this action inspects the `project.version`
+declared in **`pyproject.toml`** and tells you whether that exact version is
+already on the Python package index of your choice (PyPI, Test PyPI, a private
+index, …).
 
 ---
 
 ## 🚀 What the action does
 
-1. **Parses** `project.name` and `project.version` from the given `pyproject.toml`.
-2. **Queries** the (single) index host you specify — defaults to **`https://pypi.org/simple`**.
+1. **Parses** `project.name` and `project.version` from the given
+   `pyproject.toml`.
+2. **Queries** the (single) index host you specify — defaults to
+   **`https://pypi.org/simple`**.
 3. **Compares** your local version with the versions already published.
-4. **Exposes** three easy-to-consume outputs so you can branch your workflow logic.
+4. **Exposes** three easy-to-consume outputs so you can branch your workflow
+   logic.
 
 ---
 
@@ -23,13 +32,14 @@ name: Build & Publish
 on:
   push:
     branches: [main]
-    tags: ["v[0-9]+.[0-9]+.[0-9]+"]
+    tags: ['v[0-9]+.[0-9]+.[0-9]+']
 
 jobs:
   version-check:
     runs-on: ubuntu-latest
     outputs:
-      current_version_exists: ${{ steps.version_check.outputs.current_version_exists }}
+      current_version_exists:
+        ${{ steps.version_check.outputs.current_version_exists }}
       version: ${{ steps.version_check.outputs.package_version }}
       package_name: ${{ steps.version_check.outputs.package_name }}
     steps:

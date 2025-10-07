@@ -1,12 +1,51 @@
-name: CI & Release
+name: Continuous Integration
 
 on:
-  push:
   pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
 
 jobs:
-  tests:
-    name: Integration tests
+  test-typescript:
+    name: TypeScript Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        id: checkout
+        uses: actions/checkout@v5
+
+      - name: Setup Node.js
+        id: setup-node
+        uses: actions/setup-node@v5
+        with:
+          node-version-file: .node-version
+          cache: npm
+
+      - name: Install Dependencies
+        id: pnpm-ci
+        run: pnpm install
+
+      - name: Check Format
+        id: pnpm-format-check
+        run: pnpm format:check
+
+      - name: Lint
+        id: pnpm-lint
+        run: pnpm lint
+
+      - name: Test
+        id: pnpm-test
+        run: pnpm test
+
+  test-action:
+    name: GitHub Actions Test
     runs-on: ubuntu-latest
 
     strategy:
@@ -15,40 +54,35 @@ jobs:
         include:
           - case: already_published_pypi
             path: tests/fixtures/already_published/pypi.org/pyproject.toml
-            index: "https://pypi.org/simple"
-            expected_pypi_org: "true"
+            index: 'https://pypi.org/simple'
+            expected_pypi_org: 'true'
 
           - case: needs_publishing_pypi
             path: tests/fixtures/needs_publishing/pypi.org/pyproject.toml
-            index: "https://pypi.org/simple"
-            expected_pypi_org: "false"
+            index: 'https://pypi.org/simple'
+            expected_pypi_org: 'false'
 
           - case: already_published_pypi_test
             path: tests/fixtures/already_published/test.pypi.org/pyproject.toml
-            index: "https://test.pypi.org/simple"
-            expected_test_pypi_org: "true"
+            index: 'https://test.pypi.org/simple'
+            expected_test_pypi_org: 'true'
 
           - case: needs_publishing_pypi_test
             path: tests/fixtures/needs_publishing/test.pypi.org/pyproject.toml
-            index: "https://test.pypi.org/simple"
-            expected_test_pypi_org: "false"
+            index: 'https://test.pypi.org/simple'
+            expected_test_pypi_org: 'false'
 
           - case: already_published_dynamic
             path: tests/fixtures/already_published/test_dynamic/pyproject.toml
-            index: "https://pypi.org/simple"
-            expected_pypi_org: "true"
+            index: 'https://pypi.org/simple'
+            expected_pypi_org: 'true'
 
           - case: needs_published_dynamic
             path: tests/fixtures/needs_publishing/test_dynamic/pyproject.toml
-            index: "https://pypi.org/simple"
-            expected_pypi_org: "false"
+            index: 'https://pypi.org/simple'
+            expected_pypi_org: 'false'
     steps:
       - uses: actions/checkout@v5
-
-      - name: Setup python
-        uses: actions/setup-python@v6
-        with:
-          python-version: "3.13"
 
       - name: Run version-check (${{ matrix.case }})
         id: check

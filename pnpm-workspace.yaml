@@ -1,0 +1,11 @@
+packages:
+  - .
+
+onlyBuiltDependencies:
+  - '@parcel/watcher'
+  - '@swc/core'
+  - core-js-pure
+  - esbuild
+  - lmdb
+  - msgpackr-extract
+  - unrs-resolver
