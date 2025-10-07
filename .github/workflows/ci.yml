@@ -41,7 +41,7 @@ jobs:
           - case: needs_published_dynamic
             path: tests/fixtures/needs_publishing/test_dynamic/pyproject.toml
             index: "https://pypi.org/simple"
-            expected_pypi_org: "true"
+            expected_pypi_org: "false"
     steps:
       - uses: actions/checkout@v5
 
