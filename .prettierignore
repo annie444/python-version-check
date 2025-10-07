@@ -4,3 +4,6 @@ dist/
 node_modules/
 coverage/
 .venv/
+pnpm-lock.yaml
+package-lock.json
+yarn.lock
