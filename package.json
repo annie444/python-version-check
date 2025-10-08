@@ -1,7 +1,7 @@
 {
   "name": "python-version-check",
   "description": "A GitHub Action to check Python version compatibility.",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "author": "Annie Ehler <annie.ehler.4@gmail.com>",
   "type": "module",
   "private": true,
