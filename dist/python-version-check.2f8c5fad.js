@@ -1,2 +1,0 @@
-import e from"./python-version-check.dba5a2d4.js";import t from"./python-version-check.c2bfca41.js";var r={};let o=Symbol.for("undici.globalDispatcher.1");var n=e.InvalidArgumentError;function i(e){if(!e||"function"!=typeof e.dispatch)throw new n("Argument agent must implement Agent");Object.defineProperty(globalThis,o,{value:e,writable:!0,enumerable:!1,configurable:!1})}function a(){return globalThis[o]}void 0===a()&&i(new t),r={setGlobalDispatcher:i,getGlobalDispatcher:a};export{r as default};
-//# sourceMappingURL=python-version-check.2f8c5fad.js.map

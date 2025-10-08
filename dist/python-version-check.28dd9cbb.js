@@ -1,2 +1,0 @@
-import r from"./python-version-check.685b5bb2.js";import e from"./python-version-check.3f48d3ee.js";import*as t from"assert";var o={},i=r.URLSerializer,a=e.isValidHeaderName;o={urlEquals:function(r,e,t=!1){return i(r,t)===i(e,t)},fieldValues:function(r){t(null!==r);let e=[];for(let t of r.split(",")){if((t=t.trim()).length)a(t)&&e.push(t)}return e}};export{o as default};
-//# sourceMappingURL=python-version-check.28dd9cbb.js.map

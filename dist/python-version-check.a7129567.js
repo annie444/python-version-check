@@ -1,2 +1,0 @@
-import r from"./python-version-check.929971c1.js";var e=globalThis,o={},t={},i=e.parcelRequire5a65;null==i&&((i=function(r){if(r in o)return o[r].exports;if(r in t){var e=t[r];delete t[r];var i={id:r,exports:{}};return o[r]=i,e.call(i.exports,i,i.exports),i.exports}var n=Error("Cannot find module '"+r+"'");throw n.code="MODULE_NOT_FOUND",n}).register=function(r,e){t[r]=e},e.parcelRequire5a65=i),(0,i.register)("9Scr8",function(e,o){e.exports=r}),i("9Scr8");
-//# sourceMappingURL=python-version-check.a7129567.js.map

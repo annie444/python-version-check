@@ -1,2 +1,0 @@
-var e={};Object.defineProperty(e,"__esModule",{value:!0}),e.toCommandProperties=e.toCommandValue=void 0,e.toCommandValue=function(e){return null==e?"":"string"==typeof e||e instanceof String?e:JSON.stringify(e)},e.toCommandProperties=function(e){return Object.keys(e).length?{title:e.title,file:e.file,line:e.startLine,endLine:e.endLine,col:e.startColumn,endColumn:e.endColumn}:{}};export{e as default};
-//# sourceMappingURL=python-version-check.049348fe.js.map
