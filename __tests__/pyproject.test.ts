@@ -88,7 +88,7 @@ dynamic = ["version"]
 
   it('throws an error for invalid TOML content', async () => {
     await expect(getPackageInfo('invalid/toml')).rejects.toThrow(
-      'Failed to parse invalid/toml as TOML: Expected \\"=\\" or [ \\\\t] but \\"t\\" found. At line 1, column 9'
+      'Failed to parse invalid/toml as TOML: Expected "=" or [ \\t] but "t" found. At line 1, column 9'
     )
   })
 })
