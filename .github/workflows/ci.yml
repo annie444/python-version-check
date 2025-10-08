@@ -21,34 +21,28 @@ jobs:
         id: checkout
         uses: actions/checkout@v5
 
-      - name: Setup Pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          run_install: false
-          standalone: true
-
       - name: Setup Node.js
         id: setup-node
         uses: actions/setup-node@v5
         with:
           node-version-file: .node-version
-          cache: pnpm
+          cache: npm
 
       - name: Install Dependencies
-        id: pnpm-ci
-        run: pnpm install
+        id: npm-ci
+        run: npm ci
 
       - name: Check Format
-        id: pnpm-format-check
-        run: pnpm format:check
+        id: npm-format-check
+        run: npm format:check
 
       - name: Lint
-        id: pnpm-lint
-        run: pnpm lint
+        id: npm-lint
+        run: npm lint
 
       - name: Test
-        id: pnpm-test
-        run: pnpm test
+        id: npm-test
+        run: npm test
 
   test-action:
     name: GitHub Actions Test

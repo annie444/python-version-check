@@ -29,22 +29,16 @@ jobs:
         id: checkout
         uses: actions/checkout@v5
 
-      - name: Setup Pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          run_install: false
-          standalone: true
-
       - name: Setup Node.js
         id: setup-node
         uses: actions/setup-node@v5
         with:
           node-version-file: .node-version
-          cache: pnpm
+          cache: npm
 
       - name: Install Dependencies
         id: npm-ci
-        run: pnpm install
+        run: npm ci
 
       - name: Setup Ruby
         id: setup-ruby

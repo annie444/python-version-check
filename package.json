@@ -24,25 +24,17 @@
   },
   "source": "src/index.ts",
   "main": "dist/index.js",
-  "targets": {
-    "main": {
-      "context": "node",
-      "isLibrary": false,
-      "optimize": true,
-      "includeNodeModules": true
-    }
-  },
   "scripts": {
-    "bundle": "pnpm run format:write && pnpm run package",
-    "coverage": "make-coverage-badge --output-path ./badges/coverage.svg",
+    "bundle": "npm run format:write && npm run package",
+    "coverage": "npx make-coverage-badge --output-path ./badges/coverage.svg",
     "format:write": "prettier --write .",
     "format:check": "prettier --check .",
     "lint": "eslint .",
-    "local-action": "pnpx @github/local-action . src/main.ts .env",
-    "package": "parcel build",
-    "package:watch": "parcel watch",
+    "local-action": "npx @github/local-action . src/main.ts .env",
+    "package": "rollup --config rollup.config.ts",
+    "package:watch": "rollup --config rollup.config.ts --watch",
     "test": "NODE_OPTIONS=--experimental-vm-modules NODE_NO_WARNINGS=1 jest",
-    "all": "pnpm run format:write && pnpm run lint && pnpm run test && pnpm run coverage && pnpm run package"
+    "all": "npm run format:write && npm run lint && npm run test && npm run coverage && npm run package"
   },
   "license": "MIT",
   "dependencies": {
@@ -55,10 +47,10 @@
     "@eslint/compat": "^1.4.0",
     "@eslint/eslintrc": "^3.3.1",
     "@eslint/js": "^9.37.0",
-    "@github/local-action": "^6.0.0",
     "@jest/globals": "^30.2.0",
-    "@parcel/bundler-library": "^2.16.0",
-    "@parcel/config-default": "^2.16.0",
+    "@rollup/plugin-commonjs": "^28.0.6",
+    "@rollup/plugin-node-resolve": "^16.0.2",
+    "@rollup/plugin-typescript": "^12.1.4",
     "@types/jest": "^30.0.0",
     "@types/node": "^24.7.0",
     "@typescript-eslint/eslint-plugin": "^8.46.0",
@@ -71,13 +63,14 @@
     "eslint-plugin-prettier": "^5.5.4",
     "globals": "^16.4.0",
     "jest": "^30.2.0",
-    "make-coverage-badge": "^1.2.0",
-    "parcel": "^2.16.0",
     "prettier": "^3.6.2",
     "prettier-eslint": "^16.4.2",
+    "rollup": "^4.52.4",
     "ts-jest": "^29.4.4",
     "ts-jest-resolver": "^2.0.1",
     "typescript": "^5.9.3"
   },
-  "packageManager": "pnpm@10.18.1+sha512.77a884a165cbba2d8d1c19e3b4880eee6d2fcabd0d879121e282196b80042351d5eb3ca0935fa599da1dc51265cc68816ad2bddd2a2de5ea9fdf92adbec7cd34"
+  "optionalDependencies": {
+    "@rollup/rollup-linux-x64-gnu": "*"
+  }
 }
