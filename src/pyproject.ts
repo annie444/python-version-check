@@ -1,4 +1,5 @@
 import * as exec from '@actions/exec'
+import * as io from '@actions/io'
 import * as fs from 'node:fs'
 import * as path from 'node:path'
 import * as toml from 'toml'
@@ -167,13 +168,22 @@ export async function getPackageInfo(
  * @throws {Error} If the version cannot be determined.
  * @returns A Promise that resolves to the package version as a string.
  */
-export async function getPackageVersion(pkg: PackageInfo): Promise<string> {
+export async function getPackageVersion(
+  pkg: PackageInfo,
+  pythonExec: string | undefined
+): Promise<string> {
   if (pkg.version) {
     return pkg.version
   }
   if (pkg.dynamic && pkg.dynamic.includes('version')) {
     // get version from python
-    const res = await exec.getExecOutput('python3', [
+    let pythonPath: string = ''
+    if (pythonExec) {
+      pythonPath = pythonExec
+    } else {
+      pythonPath = await io.which('python3', true)
+    }
+    const res = await exec.getExecOutput(pythonPath, [
       '-m',
       'pip',
       'install',
@@ -184,7 +194,7 @@ export async function getPackageVersion(pkg: PackageInfo): Promise<string> {
         `Failed to install package at ${pkg.path}. Stdout: ${res.stdout}. Stderr: ${res.stderr}.`
       )
     }
-    const res2 = await exec.getExecOutput('python3', [
+    const res2 = await exec.getExecOutput(pythonPath, [
       '-c',
       `import ${pkg.name.replace(/-/g, '_')}; print(${pkg.name.replace(
         /-/g,

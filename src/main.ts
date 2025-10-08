@@ -19,6 +19,18 @@ function assertHasMessage(
   }
 }
 
+function pythonPath(): string | undefined {
+  try {
+    const pythonExec = core.getInput('python-path')
+    if (pythonExec) {
+      return pythonExec
+    }
+  } catch {
+    // Ignore errors and fall through to return undefined
+    return undefined
+  }
+}
+
 /**
  * The main function for the action.
  *
@@ -28,6 +40,7 @@ export async function run(): Promise<void> {
   try {
     const pyprojectPath: string = core.getInput('path')
     const simpleIndexUrl: string = core.getInput('index')
+    const pythonExec = pythonPath()
     if (!pyprojectPath) {
       core.setFailed('Input "path" is required')
       return
@@ -41,7 +54,10 @@ export async function run(): Promise<void> {
     const packageInfo: PackageInfo = await getPackageInfo(pyprojectPath)
     const packageName: string = packageInfo.name
     core.debug(`Found package: ${packageName}`)
-    const packageVersion: string = await getPackageVersion(packageInfo)
+    const packageVersion: string = await getPackageVersion(
+      packageInfo,
+      pythonExec
+    )
     core.debug(`Found version: ${packageVersion}`)
 
     core.setOutput('package_name', packageName)

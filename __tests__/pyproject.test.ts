@@ -70,7 +70,7 @@ dynamic = ["version"]
 
   it('gets package version from a valid pyproject.toml', async () => {
     const pkg = await getPackageInfo('valid/path')
-    const version = await getPackageVersion(pkg)
+    const version = await getPackageVersion(pkg, undefined)
     expect(version).toEqual('1.0.0')
   })
 

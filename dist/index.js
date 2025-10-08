@@ -27285,6 +27285,8 @@ async function queryIndex(index, packageName) {
 
 var execExports = requireExec();
 
+var ioExports = requireIo();
+
 var parser;
 var hasRequiredParser;
 
@@ -31463,13 +31465,20 @@ async function getPackageInfo(pyprojectPath) {
  * @throws {Error} If the version cannot be determined.
  * @returns A Promise that resolves to the package version as a string.
  */
-async function getPackageVersion(pkg) {
+async function getPackageVersion(pkg, pythonExec) {
     if (pkg.version) {
         return pkg.version;
     }
     if (pkg.dynamic && pkg.dynamic.includes('version')) {
         // get version from python
-        const res = await execExports.getExecOutput('python3', [
+        let pythonPath = '';
+        if (pythonExec) {
+            pythonPath = pythonExec;
+        }
+        else {
+            pythonPath = await ioExports.which('python3', true);
+        }
+        const res = await execExports.getExecOutput(pythonPath, [
             '-m',
             'pip',
             'install',
@@ -31478,7 +31487,7 @@ async function getPackageVersion(pkg) {
         if (res.exitCode !== 0) {
             throw new Error(`Failed to install package at ${pkg.path}. Stdout: ${res.stdout}. Stderr: ${res.stderr}.`);
         }
-        const res2 = await execExports.getExecOutput('python3', [
+        const res2 = await execExports.getExecOutput(pythonPath, [
             '-c',
             `import ${pkg.name.replace(/-/g, '_')}; print(${pkg.name.replace(/-/g, '_')}.__version__)`
         ]);
@@ -31502,6 +31511,18 @@ function assertHasMessage(error) {
         throw new TypeError('The error does not have a message property');
     }
 }
+function pythonPath() {
+    try {
+        const pythonExec = coreExports.getInput('python-path');
+        if (pythonExec) {
+            return pythonExec;
+        }
+    }
+    catch {
+        // Ignore errors and fall through to return undefined
+        return undefined;
+    }
+}
 /**
  * The main function for the action.
  *
@@ -31511,6 +31532,7 @@ async function run() {
     try {
         const pyprojectPath = coreExports.getInput('path');
         const simpleIndexUrl = coreExports.getInput('index');
+        const pythonExec = pythonPath();
         if (!pyprojectPath) {
             coreExports.setFailed('Input "path" is required');
             return;
@@ -31523,7 +31545,7 @@ async function run() {
         const packageInfo = await getPackageInfo(pyprojectPath);
         const packageName = packageInfo.name;
         coreExports.debug(`Found package: ${packageName}`);
-        const packageVersion = await getPackageVersion(packageInfo);
+        const packageVersion = await getPackageVersion(packageInfo, pythonExec);
         coreExports.debug(`Found version: ${packageVersion}`);
         coreExports.setOutput('package_name', packageName);
         coreExports.setOutput('package_version', packageVersion);
