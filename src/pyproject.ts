@@ -148,8 +148,7 @@ export async function getPackageInfo(
       Object.hasOwn(error as object, 'column')
     ) {
       throw new Error(
-        `Failed to parse ${pyprojectPath} as TOML: ${(error as Error).message} ad line ${(error as { line: number }).line}, column ${
-          (error as { column: number }).column
+        `Failed to parse ${pyprojectPath} as TOML: ${(error as Error).message} At line ${(error as { line: number }).line}, column ${(error as { column: number }).column
         }`
       )
     }
