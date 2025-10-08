@@ -1,7 +1,7 @@
 import * as exec from '@actions/exec'
 import * as fs from 'node:fs'
 import * as path from 'node:path'
-import { load } from 'js-toml'
+import * as toml from 'toml'
 
 /**
  * Asserts that the given object has a 'project' field which is an object.
@@ -116,29 +116,45 @@ export async function getPackageInfo(
     throw new Error(`Not a file: ${pyprojectPath}`)
   }
   const file = await fs.promises.readFile(pyprojectPath, 'utf8')
-  const toml = load(file)
-  assertHasProject(toml)
-  const project = toml.project as Record<string, unknown>
-  assertHasName(project)
-  const packageInfo: PackageInfo = {
-    name: project.name,
-    path: path.dirname(path.resolve(pyprojectPath))
-  }
   try {
-    assertHasVersion(project)
-    packageInfo.version = project.version
-  } catch {
-    // version field is optional if dynamic includes "version"
-    // so we ignore the error here
-    // we will get the version from python instead
-    // if version is not in dynamic, we will error below
-    assertHasDynamic(project)
-    if (!project.dynamic.includes('version')) {
-      throw new Error('No version field in [project] section of pyproject.toml')
+    const obj = toml.parse(file)
+    assertHasProject(obj)
+    const project = obj.project as Record<string, unknown>
+    assertHasName(project)
+    const packageInfo: PackageInfo = {
+      name: project.name,
+      path: path.dirname(path.resolve(pyprojectPath))
     }
-    packageInfo.dynamic = project.dynamic
+    try {
+      assertHasVersion(project)
+      packageInfo.version = project.version
+    } catch {
+      // version field is optional if dynamic includes "version"
+      // so we ignore the error here
+      // we will get the version from python instead
+      // if version is not in dynamic, we will error below
+      assertHasDynamic(project)
+      if (!project.dynamic.includes('version')) {
+        throw new Error(
+          'No version field in [project] section of pyproject.toml'
+        )
+      }
+      packageInfo.dynamic = project.dynamic
+    }
+    return packageInfo
+  } catch (error) {
+    if (
+      Object.hasOwn(error as object, 'line') &&
+      Object.hasOwn(error as object, 'column')
+    ) {
+      throw new Error(
+        `Failed to parse ${pyprojectPath} as TOML: ${(error as Error).message} ad line ${(error as { line: number }).line}, column ${
+          (error as { column: number }).column
+        }`
+      )
+    }
+    throw error
   }
-  return packageInfo
 }
 
 /**

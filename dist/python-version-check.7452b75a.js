@@ -1,0 +1,2 @@
+import r from"./python-version-check.dba5a2d4.js";var e={},t=r.UndiciError;class c extends t{constructor(r){super(r),Error.captureStackTrace(this,c),this.name="MockNotMatchedError",this.message=r||"The request does not match any registered mock dispatches",this.code="UND_MOCK_ERR_MOCK_NOT_MATCHED"}}e={MockNotMatchedError:c};export{e as default};
+//# sourceMappingURL=python-version-check.7452b75a.js.map

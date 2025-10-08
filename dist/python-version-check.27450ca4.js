@@ -1,0 +1,2 @@
+var r={};r=class{constructor(r){this.handler=r}onConnect(...r){return this.handler.onConnect(...r)}onError(...r){return this.handler.onError(...r)}onUpgrade(...r){return this.handler.onUpgrade(...r)}onHeaders(...r){return this.handler.onHeaders(...r)}onData(...r){return this.handler.onData(...r)}onComplete(...r){return this.handler.onComplete(...r)}onBodySent(...r){return this.handler.onBodySent(...r)}};export{r as default};
+//# sourceMappingURL=python-version-check.27450ca4.js.map
