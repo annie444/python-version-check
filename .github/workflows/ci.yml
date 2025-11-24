@@ -21,7 +21,7 @@ jobs:
     steps:
       - name: Checkout
         id: checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Setup Node.js
         id: setup-node
@@ -85,7 +85,7 @@ jobs:
             expected_pypi_org: 'false'
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Run version-check (${{ matrix.case }})
         id: check
@@ -140,7 +140,7 @@ jobs:
       contents: write
 
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
 
       - name: Draft release notes
         uses: softprops/action-gh-release@v2
